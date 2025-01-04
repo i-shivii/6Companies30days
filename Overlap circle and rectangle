@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cmath>
+
+class Solution {
+public:
+    bool checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+        int closestX = std::max(x1, std::min(xCenter, x2));
+        int closestY = std::max(y1, std::min(yCenter, y2));
+
+        int deltaX = xCenter - closestX;
+        int deltaY = yCenter - closestY;
+        int squaredDistance = deltaX * deltaX + deltaY * deltaY;
+
+        return squaredDistance <= radius * radius;
+    }
+};
+
+int main() {
+    Solution solution;
+
+    int radius = 5;
+    int xCenter = 5;
+    int yCenter = 5;
+
+    int x1 = 0;
+    int y1 = 0;
+    int x2 = 10;
+    int y2 = 10;
+
+    if (solution.checkOverlap(radius, xCenter, yCenter, x1, y1, x2, y2)) {
+        std::cout << "True" << std::endl; // Circle and rectangle overlap
+    } else {
+        std::cout << "False" << std::endl; // Circle and rectangle do not overlap
+    }
+
+    return 0;
+}
