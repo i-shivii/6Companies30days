@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int maxEnvelopes(std::vector<std::vector<int>>& envelopes) {
+  
+        std::sort(envelopes.begin(), envelopes.end(), [](const std::vector<int>& a, const std::vector<int>& b) {
+            if (a[0] == b[0]) {
+                return a[1] > b[1]; // Sort heights in descending order if widths are equal
+            }
+            return a[0] < b[0]; // Sort widths in ascending order
+        });
+
+   
+        std::vector<int> heights;
+        for (const auto& envelope : envelopes) {
+            heights.push_back(envelope[1]);
+        }
+
+        return lengthOfLIS(heights);
+    }
+
+private:
+    int lengthOfLIS(const std::vector<int>& nums) {
+        std::vector<int> lis;
+        for (int num : nums) {
+            auto it = std::lower_bound(lis.begin(), lis.end(), num);
+            if (it == lis.end()) {
+                lis.push_back(num);
+            } else {
+                *it = num;
+            }
+        }
+        return lis.size();
+    }
+};
+
+int main() {
+    Solution solution;
+
+    std::vector<std::vector<int>> envelopes = {{5, 4}, {6, 4}, {6, 7}, {2, 3}};
+    int result = solution.maxEnvelopes(envelopes);
+
+    std::cout << "The maximum number of envelopes you can Russian doll is: " << result << std::endl;
+
+    return 0;
+}
