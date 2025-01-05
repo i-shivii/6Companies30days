@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+         int bulls = 0, cows = 0;
+        unordered_map<char, int> secretCount, guessCount;
+
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] == guess[i]) {
+                ++bulls;
+            } else {
+                ++secretCount[secret[i]];
+                ++guessCount[guess[i]];
+            }
+        }
+
+        for (auto& [ch, count] : guessCount) {
+            if (secretCount.find(ch) != secretCount.end()) {
+                cows += min(secretCount[ch], count);
+            }
+        }
+
+        return to_string(bulls) + "A" + to_string(cows) + "B";
+    }
+
+    
+};
+
