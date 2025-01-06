@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int incremovableSubarrayCount(vector<int>& nums) {
+         int n = nums.size();
+    vector<bool> prefix(n, true), suffix(n, true);
+
+   
+    for (int i = 1; i < n; i++) {
+        prefix[i] = prefix[i - 1] && (nums[i] > nums[i - 1]);
+    }
+
+    for (int i = n - 2; i >= 0; i--) {
+        suffix[i] = suffix[i + 1] && (nums[i] < nums[i + 1]);
+    }
+
+    int count = 0;
+
+ 
+    for (int l = 0; l < n; l++) {
+        for (int r = l; r < n; r++) {
+          
+            bool leftValid = (l == 0 || prefix[l - 1]);
+            bool rightValid = (r == n - 1 || suffix[r + 1]);
+            bool middleValid = (l == 0 || r == n - 1 || nums[l - 1] < nums[r + 1]);
+
+            if (leftValid && rightValid && middleValid) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+    }
+};
