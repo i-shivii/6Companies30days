@@ -1,0 +1,32 @@
+class Solution {
+public:
+
+bool isPalindrome(const string& s, int bitmask) {
+    string subsequence = "";
+    for (int i = 0; i < s.size(); i++) {
+        if (bitmask & (1 << i)) {
+            subsequence += s[i];
+        }
+    }
+    string reversedSubsequence = subsequence;
+    reverse(reversedSubsequence.begin(), reversedSubsequence.end());
+    return subsequence == reversedSubsequence;
+}
+
+int maxProduct(string s) {
+    int n = s.size();
+    int maxProduct = 0;
+    for (int mask1 = 0; mask1 < (1 << n); mask1++) {
+        if (!isPalindrome(s, mask1)) continue;
+        int len1 = __builtin_popcount(mask1);
+        for (int mask2 = 0; mask2 < (1 << n); mask2++) {
+            if ((mask1 & mask2) != 0) continue;
+            if (!isPalindrome(s, mask2)) continue;
+            int len2 = __builtin_popcount(mask2);
+            maxProduct = max(maxProduct, len1 * len2);
+        }
+    }
+    return maxProduct;
+    
+}
+};
